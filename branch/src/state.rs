@@ -1,15 +1,20 @@
-mod filesystem;
-use crate::state::filesystem::scan_current_directory;
+// mod filesystem;
+// use crate::state::filesystem::scan_current_directory;
+use crate::scan_current_directory;
 
 use std::fs::DirEntry;
 
-struct AppState{
-    files: Vec<DirEntry>
+pub struct AppState{
+    pub files: Vec<DirEntry>,
+    pub selected_index: u32
 }
 
-pub fn get_files() -> Vec<DirEntry>{
-    let files = scan_current_directory();
-    files
+impl AppState{
+    pub fn get_files(&mut self){
+        self.files = scan_current_directory();
+        println!("state.rs - get_files, files len = {}", self.files.len());
+    }
+
 }
 
 // fn main(){
