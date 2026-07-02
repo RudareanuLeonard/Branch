@@ -2,9 +2,10 @@ mod ui;
 mod state;
 mod input;
 mod filesystem;
+mod navigation;
 
 use std::io;
-
+use navigation::move_up_down;
 use filesystem::scan_current_directory;
 // use state::get_files;
 // use ui::display_files;
@@ -47,11 +48,9 @@ fn main() {
 
         key = key.trim().to_string();
 
-        if key == "w"{
-            println!("Up");
-        }
-        else if key == "s"{
-            println!("Down");
+        if key == "w" || key == "s"{
+            println!("Up or Down");
+            move_up_down(&mut appState, &key)
         }
         else if key == "q"{
             break;
