@@ -38,7 +38,8 @@ fn main() {
     println!("");
     println!("");
 
-    loop{
+    loop{ // TO DO: implement console clear to make it look smoother and not have files printed multiple times
+          // TO DO: make something (implement in navigation.rs) to know what line you are at in the "UI" (console)
         display_files(&appState);
         println!("");
         println!("Enter a key");
