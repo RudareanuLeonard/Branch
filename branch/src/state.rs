@@ -11,7 +11,7 @@ pub struct AppState{
 
 impl AppState{
     pub fn get_files(&mut self){
-        self.files = scan_current_directory();
+        // self.files = scan_current_directory(dir_path);
         println!("state.rs - get_files, files len = {}", self.files.len());
     }
 

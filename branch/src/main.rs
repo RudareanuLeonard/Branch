@@ -12,23 +12,27 @@ use filesystem::scan_current_directory;
 use input::keyboard_read;
 use state::AppState;
 use ui::display_files;
+use std::fs;
+use fs::DirEntry;
 
 
 
 fn main() {
     println!("Hello, this is MAIN file!");
 
+    let mut dir_path = fs::read_dir("../test_dir").unwrap(); //unwrap get inner result of Res // this is the initial path we are starting on
+
+    
     
 
-    let files = scan_current_directory();
+    let mut files = scan_current_directory(&mut dir_path);
 
     let mut appState = AppState{
         files: files,
         selected_index: 0
     }; 
 
-
-    appState.get_files();
+    // appState.files = files;
 
     println!("main appState files len = {}", appState.files.len());
 
@@ -39,7 +43,6 @@ fn main() {
     println!("");
 
     loop{ // TO DO: implement console clear to make it look smoother and not have files printed multiple times
-          // TO DO: make something (implement in navigation.rs) to know what line you are at in the "UI" (console)
         display_files(&appState);
         println!("");
         println!("Enter a key");
@@ -55,6 +58,12 @@ fn main() {
         }
         else if key == "q"{
             break;
+        }
+        else if key == ""{
+            println!("ENTER pressed");
+            // let dir_path = fs::read_dir("../test_dir").unwrap();
+            files = scan_current_directory(&mut dir_path);
+            println!("New len of files = {}", files.len());
         }
         else{
             println!("Key = {}", key);
