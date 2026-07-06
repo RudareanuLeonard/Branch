@@ -14,6 +14,8 @@ use state::AppState;
 use ui::display_files;
 use std::fs;
 use fs::DirEntry;
+use std::path::Path;
+use std::path::PathBuf;
 
 
 
@@ -59,10 +61,22 @@ fn main() {
         else if key == "q"{
             break;
         }
-        else if key == ""{
+        else if key == ""{ // TO DO - PRESS ENTER IS VALID ONLY ON DIRECTORIES
             println!("ENTER pressed");
             // let dir_path = fs::read_dir("../test_dir").unwrap();
-            files = scan_current_directory(&mut dir_path);
+            let mut current_path: PathBuf = Path::new("../test_dir").to_path_buf();
+            
+            let index = appState.selected_index as usize;
+            current_path = current_path.join(&appState.files[index].path());   
+
+            
+            let selected_entry = &appState.files[index];
+
+            current_path = selected_entry.path();
+
+            println!("DIR PATH = {}", current_path.to_string_lossy());
+
+            files = scan_current_directory(&mut current_path);
             println!("New len of files = {}", files.len());
         }
         else{
