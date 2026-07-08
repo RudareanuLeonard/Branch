@@ -81,6 +81,8 @@ fn main() {
             files = scan_current_directory(&mut read_dir_path);
 
             println!("New len of files = {}", files.len());
+            println!("NOW WILL CHANGE THE appState.files");
+            appState.files = files;
         }
         else{
             println!("Key = {}", key);
