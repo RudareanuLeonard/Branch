@@ -76,7 +76,10 @@ fn main() {
 
             println!("DIR PATH = {}", current_path.to_string_lossy());
 
-            files = scan_current_directory(&mut current_path);
+            let mut read_dir_path = fs::read_dir(&current_path).unwrap();
+
+            files = scan_current_directory(&mut read_dir_path);
+
             println!("New len of files = {}", files.len());
         }
         else{
