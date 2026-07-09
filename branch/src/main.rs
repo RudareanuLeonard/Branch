@@ -45,6 +45,8 @@ fn main() {
     println!("");
 
     loop{ // TO DO: implement console clear to make it look smoother and not have files printed multiple times
+        // let index = 0 as usize;
+        println!("MAIN INDEX = {}", appState.selected_index.to_string());
         display_files(&appState);
         println!("");
         println!("Enter a key");
@@ -79,10 +81,30 @@ fn main() {
             let mut read_dir_path = fs::read_dir(&current_path).unwrap();
 
             files = scan_current_directory(&mut read_dir_path);
+            appState.selected_index = 0;
 
             println!("New len of files = {}", files.len());
             println!("NOW WILL CHANGE THE appState.files");
             appState.files = files;
+        }
+        else if key == "b"{ // go to the prev directory
+            // let mut current_path: PathBuf = Path::new("../test_dir").to_path_buf();
+            let index = appState.selected_index as usize;
+            println!("INDEX = {}", index.to_string());
+            let selected_entry = &appState.files[index];
+
+            let current_path = selected_entry.path();
+
+            println!("DIR PATH = {}", current_path.to_string_lossy());
+            println!("b pressed; current path = {}", current_path.display().to_string());
+
+            //.parent()
+            let parent_path = current_path.parent().unwrap();
+            let mut parent_dir = std::fs::read_dir(parent_path).unwrap();
+            let files = scan_current_directory(&mut parent_dir);
+            appState.files = files;
+            println!("b pressed; PARENT path = {}", parent_path.display().to_string());
+
         }
         else{
             println!("Key = {}", key);
