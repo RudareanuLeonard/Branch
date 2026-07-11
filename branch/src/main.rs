@@ -31,7 +31,8 @@ fn main() {
 
     let mut appState = AppState{
         files: files,
-        selected_index: 0
+        selected_index: 0,
+        current_path: fs::read_dir("../test_dir").unwrap()
     }; 
 
     // appState.files = files;
@@ -68,6 +69,7 @@ fn main() {
             // let dir_path = fs::read_dir("../test_dir").unwrap();
             let mut current_path: PathBuf = Path::new("../test_dir").to_path_buf();
             
+            
             let index = appState.selected_index as usize;
             current_path = current_path.join(&appState.files[index].path());   
 
@@ -76,10 +78,11 @@ fn main() {
 
             current_path = selected_entry.path();
 
-            println!("DIR PATH = {}", current_path.to_string_lossy());
+            // println!("DIR PATH = {}", current_path.to_string_lossy());
 
             let mut read_dir_path = fs::read_dir(&current_path).unwrap();
 
+            // println!("read_dir_path = {}", read_dir_path.to_string().unwrap());
             files = scan_current_directory(&mut read_dir_path);
             appState.selected_index = 0;
 
@@ -91,19 +94,29 @@ fn main() {
             // let mut current_path: PathBuf = Path::new("../test_dir").to_path_buf();
             let index = appState.selected_index as usize;
             println!("INDEX = {}", index.to_string());
+
             let selected_entry = &appState.files[index];
-
             let current_path = selected_entry.path();
+            appState.current_path = std::fs::read_dir(&current_path).unwrap();
 
-            println!("DIR PATH = {}", current_path.to_string_lossy());
-            println!("b pressed; current path = {}", current_path.display().to_string());
+            // println!("DIR PATH = {}", current_path.to_string_lossy());
+            // println!("b pressed; current path = {}", current_path.display().to_string());
 
             //.parent()
             let parent_path = current_path.parent().unwrap();
             let mut parent_dir = std::fs::read_dir(parent_path).unwrap();
-            let files = scan_current_directory(&mut parent_dir);
-            appState.files = files;
-            println!("b pressed; PARENT path = {}", parent_path.display().to_string());
+            let parent_parent_path = parent_path.parent().unwrap();
+            let mut parent_parent_dir = std::fs::read_dir(parent_path).unwrap();
+            appState.current_path = parent_parent_dir;
+            // println!("b pressed; PARENT_PARENT path = {}", appState.current_path.by_ref().count());
+
+            appState.files = scan_current_directory(&mut appState.current_path);
+            println!("LEN OF FILES = {}", appState.files.len());
+            // appState.files = files;
+            // println!("LEN OF appstate.FILES = {}", appState.files.len());
+            
+            // println!("b pressed; PARENT_PARENT path = {}", parent_parent_path.display().to_string());
+            //the issue is that scan_current_directory does not scan the path again after i pass the path to it
 
         }
         else{

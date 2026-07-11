@@ -1,12 +1,15 @@
 // mod filesystem;
 // use crate::state::filesystem::scan_current_directory;
 use crate::scan_current_directory;
+use std::fs::ReadDir;
 
 use std::fs::DirEntry;
 
 pub struct AppState{
     pub files: Vec<DirEntry>,
-    pub selected_index: u32
+    pub selected_index: u32,
+    pub current_path: PathBuf,
+
 }
 
 impl AppState{

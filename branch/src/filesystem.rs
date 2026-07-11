@@ -4,12 +4,10 @@ use std::fs::ReadDir;
 
 
 pub fn scan_current_directory(dir_path: &mut ReadDir) -> Vec<DirEntry>{
-
-    // let dir_path = fs::read_dir("../test_dir").unwrap(); //unwrap get inner result of Res
-    // println!("DIR PATH = {}", dir_path.to_string_loosy());
     let mut v_files = Vec::new();
     
     for path in dir_path{
+        println!("scan_current_directoty; path = {}", path.as_ref().unwrap().path().display());
        v_files.push(path.unwrap());
     }
 
